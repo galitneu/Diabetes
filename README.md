@@ -1,5 +1,4 @@
-Certainly. Here is the focused and practical README in English, suitable for GitHub, emphasizing the project's goals, structure, and usage.
-
+ 
 ***
 
 # Diabetes Readmission Prediction
