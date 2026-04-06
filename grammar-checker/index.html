@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grammar Checker - Write Better, Everywhere</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <svg class="logo-icon" viewBox="0 0 32 32" width="32" height="32">
+                    <circle cx="16" cy="16" r="15" fill="var(--primary)" />
+                    <text x="16" y="22" text-anchor="middle" fill="white" font-size="18" font-weight="700" font-family="Inter">G</text>
+                </svg>
+                <span class="logo-text">GrammarCheck</span>
+            </div>
+        </div>
+        <div class="header-right">
+            <select id="language-select" class="language-select">
+                <option value="en-US">English (US)</option>
+                <option value="en-GB">English (UK)</option>
+                <option value="he">Hebrew</option>
+                <option value="fr">French</option>
+                <option value="de">German</option>
+                <option value="es">Spanish</option>
+                <option value="pt-BR">Portuguese</option>
+                <option value="ru">Russian</option>
+                <option value="ar">Arabic</option>
+            </select>
+            <button id="theme-toggle" class="theme-toggle" aria-label="Toggle dark mode">
+                <svg class="icon-sun" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="editor-container">
+            <!-- Editor Panel -->
+            <div class="editor-panel">
+                <div class="editor-toolbar">
+                    <div class="toolbar-left">
+                        <button id="check-btn" class="btn btn-primary">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="20 6 9 17 4 12"/>
+                            </svg>
+                            Check Grammar
+                        </button>
+                        <button id="fix-all-btn" class="btn btn-secondary" disabled>
+                            Fix All Errors
+                        </button>
+                        <button id="clear-btn" class="btn btn-ghost">
+                            Clear
+                        </button>
+                    </div>
+                    <div class="toolbar-right">
+                        <button id="copy-btn" class="btn btn-ghost" title="Copy text">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                            </svg>
+                        </button>
+                        <button id="paste-btn" class="btn btn-ghost" title="Paste text">
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="editor-wrapper">
+                    <div id="editor-highlight" class="editor-highlight"></div>
+                    <textarea id="editor" class="editor" placeholder="Start typing or paste your text here to check for grammar, spelling, and punctuation errors..." spellcheck="false"></textarea>
+                </div>
+                <!-- Stats Bar -->
+                <div class="stats-bar">
+                    <div class="stat">
+                        <span class="stat-label">Words</span>
+                        <span id="word-count" class="stat-value">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Characters</span>
+                        <span id="char-count" class="stat-value">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Sentences</span>
+                        <span id="sentence-count" class="stat-value">0</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-label">Paragraphs</span>
+                        <span id="paragraph-count" class="stat-value">0</span>
+                    </div>
+                    <div class="stat stat-score">
+                        <span class="stat-label">Score</span>
+                        <span id="score" class="stat-value score-value">--</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar Panel -->
+            <aside class="sidebar">
+                <div class="sidebar-header">
+                    <h2 class="sidebar-title">Results</h2>
+                    <div id="error-summary" class="error-summary hidden">
+                        <span id="error-count-badge" class="error-badge">0</span>
+                        <span>issues found</span>
+                    </div>
+                </div>
+
+                <!-- Category Filters -->
+                <div id="category-filters" class="category-filters hidden">
+                    <button class="filter-btn active" data-category="all">
+                        All <span id="filter-all-count" class="filter-count">0</span>
+                    </button>
+                    <button class="filter-btn" data-category="grammar">
+                        Grammar <span id="filter-grammar-count" class="filter-count">0</span>
+                    </button>
+                    <button class="filter-btn" data-category="spelling">
+                        Spelling <span id="filter-spelling-count" class="filter-count">0</span>
+                    </button>
+                    <button class="filter-btn" data-category="punctuation">
+                        Punctuation <span id="filter-punctuation-count" class="filter-count">0</span>
+                    </button>
+                    <button class="filter-btn" data-category="style">
+                        Style <span id="filter-style-count" class="filter-count">0</span>
+                    </button>
+                </div>
+
+                <!-- Error List -->
+                <div id="error-list" class="error-list">
+                    <div class="empty-state">
+                        <svg viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="var(--text-muted)" stroke-width="1.5">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                        </svg>
+                        <p>Type or paste text and click<br><strong>"Check Grammar"</strong> to get started</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <!-- Error Tooltip (popup for inline errors) -->
+    <div id="error-tooltip" class="error-tooltip hidden">
+        <div class="tooltip-header">
+            <span class="tooltip-category"></span>
+            <button class="tooltip-close">&times;</button>
+        </div>
+        <p class="tooltip-message"></p>
+        <div class="tooltip-suggestions"></div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="spinner"></div>
+        <p>Checking your text...</p>
+    </div>
+
+    <script src="js/grammar.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
