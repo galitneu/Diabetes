@@ -1,0 +1,11 @@
+anthropic>=0.90.0
+srt>=3.5.3
+pyannote.audio>=3.1.0
+torch>=2.1.0
+torchaudio>=2.1.0
+librosa>=0.10.1
+numpy>=1.24.0
+opencv-python>=4.8.0
+deepface>=0.0.93
+python-dotenv>=1.0.0
+tqdm>=4.66.0
